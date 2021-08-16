@@ -1,0 +1,14 @@
+<section th:fragment="menu">
+	<ul th:each="element : ${elementsList}">
+		<li th:if="${#lists.isEmpty(element.subElements)}">
+			<p th:text="${element.name}"></p>
+		</li>
+
+		<li th:if="not ${#lists.isEmpty(element.subElements)}">
+			<p th:text="${element.name}"></p>
+			<section th:insert="@{menuFragment} :: menu"
+				th:with="elementsList=${element.subElements}"></section>
+
+		</li>
+	</ul>
+</section>
