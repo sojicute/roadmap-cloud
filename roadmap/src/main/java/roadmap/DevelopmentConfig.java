@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import roadmap.data.CommentRepository;
 import roadmap.data.ElementRepository;
 import roadmap.data.RoadmapRepository;
 import roadmap.data.UserRepository;
@@ -20,10 +21,16 @@ public class DevelopmentConfig {
 
 	@Bean
 	public CommandLineRunner dataLoader(RoadmapRepository roadmapRepo, UserRepository userRepo,
-			ElementRepository elementRepo, PasswordEncoder encoder) {
+			ElementRepository elementRepo, CommentRepository commentRepo, PasswordEncoder encoder) {
 		return new CommandLineRunner() {
 			@Override
 			public void run(String... args) throws Exception {
+				Comment comment = new Comment();
+				comment.setText("Awesome!");
+				
+//				comment.setElement(element1);
+//				element1.getComments().add(comment);
+				
 				Element element1 = new Element();
 				Element element2 = new Element();
 
@@ -32,11 +39,16 @@ public class DevelopmentConfig {
 				Element childElement3 = new Element();
 
 				element1.setName("Spring");
+				element1.getComments().add(comment);
+				
 				element2.setName("Hibernate");
+				
+				comment.setElement(element1);
+				
 				childElement1.setName("JPA");
 				childElement2.setName("Hibernate Detail");
 				childElement3.setName("WTF");
-
+				
 				Roadmap roadmap = new Roadmap();
 				element1.setRoadmap(roadmap);
 				element2.setRoadmap(roadmap);
@@ -65,15 +77,24 @@ public class DevelopmentConfig {
 				elementRepo.save(childElement3);
 
 				roadmapRepo.save(roadmap);
-				
-				
+
 				userRepo.save(new User("kinetsu", encoder.encode("password"), "Craig Walls", "123 North Street",
 						"Cross Roads", "TX", "76227", "123-123-1234"));
 
-				SchemaExport schemaExport = new SchemaExport();
-				schemaExport.setFormat(true);
-				schemaExport.setOutputFile("create.sql");
+				
+				Comment comment2 = new Comment();
+				comment2.setText("Cool! My second comment!");
+				
+				element1.getComments().add(comment2);
+				comment2.setElement(element1);
+				
+				commentRepo.save(comment2);
+				
+//				List<Comment> commentList = new ArrayList<>();
+//
+//				commentList.add(comment);
 
+//				element1.setComments(commentList);
 			}
 		};
 	}
