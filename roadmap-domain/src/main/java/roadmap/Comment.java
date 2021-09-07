@@ -10,6 +10,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -26,7 +28,12 @@ public class Comment {
 	private String text;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "user_id")
+	private User user;
+	
+	@ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="element_id")
     private Element element;
+	
 	
 }

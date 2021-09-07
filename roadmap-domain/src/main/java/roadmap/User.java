@@ -1,12 +1,17 @@
 package roadmap;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -36,7 +41,10 @@ public class User implements UserDetails {
 	private final String state;
 	private final String zip;
 	private final String phoneNumber;
-
+	
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+	private List<Comment> comments = new ArrayList<>();
+	
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		return Arrays.asList(new SimpleGrantedAuthority("ROLE_USER"));
