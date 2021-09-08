@@ -33,6 +33,7 @@ public class Comment {
 	
 	@ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="element_id")
+	@JsonIgnore
     private Element element;
 	
 	
